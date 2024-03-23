@@ -6,7 +6,4 @@ module.exports = defineConfig({
       // implement node event listeners here
     },
   },
-  env: {
-    URL:  "https://gorest.co.in/"
-  }
 });
