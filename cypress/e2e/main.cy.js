@@ -1,6 +1,6 @@
 const URL_BASE = "https://reqres.in";
 
-describe('Api testing', () => {
+describe('Api testing on reqres', () => {
 
     beforeEach(() => {
         
@@ -32,7 +32,19 @@ describe('Api testing', () => {
     it('03 - Get user invalid endpoint', () => {
         cy.request({
             method: 'GET',
-            url: `${URL_BASE}/api/users/100`,
+            url: `${URL_BASE}/api/users/list/10`,
+            failOnStatusCode: false // Para que no de error
+        })
+        .then((response) => {
+            cy.log(JSON.stringify(response))
+            expect(response.status).to.eq(404);
+        });
+    });
+
+    it('04 - Get user not found', () => {
+        cy.request({
+            method: 'GET',
+            url: `${URL_BASE}/api/users/23`,
             failOnStatusCode: false // Para que no de error
         })
         .then((response) => {
