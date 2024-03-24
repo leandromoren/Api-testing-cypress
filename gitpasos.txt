@@ -1,0 +1,19 @@
+Crear un nuevo repo
+- git init
+
+Crear un gitignore para meter lo que vamos a ignorar
+
+Pasos para actualizar el repo y subir los cambios
+- git add .
+- git commit -m "mensaje"
+- git push
+
+Seteo la url de un repo para meter mis archivos
+- git remote set-url origin <url repo>
+
+
+eliminar branch
+- git branch -D main
+
+eliminar branch remota (incluye la de github)
+- git push origin --delete main
