@@ -20,7 +20,7 @@ describe('Api testing', () => {
     it('02 = Get single user', () => {
         cy.request({
             method: 'GET',
-            url: `${URL_BASE}/api/users/7`,
+            url: `${URL_BASE}/api/users/7`
         })
         .then((response) => {
             cy.log(JSON.stringify(response))
@@ -28,4 +28,16 @@ describe('Api testing', () => {
             expect(response.body.data.id).to.equal(7);
         });
     });
-});
+
+    it('03 - Get user invalid endpoint', () => {
+        cy.request({
+            method: 'GET',
+            url: `${URL_BASE}/api/users/100`,
+            failOnStatusCode: false // Para que no de error
+        })
+        .then((response) => {
+            cy.log(JSON.stringify(response))
+            expect(response.status).to.eq(404);
+        });
+    });
+});  
