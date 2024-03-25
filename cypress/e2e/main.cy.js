@@ -22,7 +22,7 @@ describe('Api testing on reqres', () => {
         })
     });
 
-    it('02 = Get single user', () => {
+    it('02 - Get single user', () => {
         cy.request({
             method: 'GET',
             url: `${URL_BASE}/api/users/7`
@@ -59,6 +59,21 @@ describe('Api testing on reqres', () => {
     });
 
     // --- POST METHODS ---
+
+    it('Different method', () => {
+        cy.fixture('users').then((data) => {
+            data.name = generateRandomName();
+            cy.request('POST', `${URL_BASE}/api/users`, data)
+            .then((response) => {
+                expect(response.status).to.eq(201)
+                expect(response.body).has.property('name', data.name)
+                expect(response.body).has.property('job', 'QA tester')
+                expect(response.body.name).to.eq(data.name)
+                expect(response.body.job).to.eq('QA tester')
+                expect(response.body.id).to.not.be.null
+            });
+        });
+    });
 
     it('05 - Post Create user', () => {
         cy.fixture('users').then((data) => {
