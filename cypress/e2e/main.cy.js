@@ -7,7 +7,6 @@ describe('Api testing on reqres', () => {
         const name = Array.from({ length: 10 }, () => letters[Math.floor(Math.random() * letters.length)]).join('');
         return name;
     }
-
     beforeEach(() => {
         
     });
@@ -62,26 +61,36 @@ describe('Api testing on reqres', () => {
     // --- POST METHODS ---
 
     it('05 - Post Create user', () => {
+        cy.fixture('users').then((data) => {
+            data.name = generateRandomName();
+            cy.request({
+                method: 'POST',
+                url: `${URL_BASE}/api/users`,
+                body: data
+            })
+            .then((response) => {
+                cy.log(JSON.stringify(response))
+                expect(response.status).to.eq(201)
+                expect(response.body).has.property('name', data.name)
+                expect(response.body).has.property('job', 'QA tester')
+                expect(response.body.name).to.eq(data.name)
+                expect(response.body.job).to.eq('QA tester')
+                expect(response.body.id).to.not.be.null
 
-        const randomName = generateRandomName();
-        
-        cy.log('RANDOM NAME: ' + randomName);
-        cy.request({
-            method: 'POST',
-            url: `${URL_BASE}/api/users`,
-            body: {
-                name: randomName,
-                job: 'Tecnica audiovisual'
-            }
+                // cy.request({
+                //     method: 'GET',
+                //     // La api deberia retornar el id del usuario creado pero reqres dice que lo crea y en realidad no lo guarda en ningun lado entonces falla
+                //     url: `${URL_BASE}/api/users/${response.body.id}`, 
+                // })
+                // .then((response) => {
+                //     expect(response.status).to.eq(200)
+                //     expect(response.body).has.property('name', data.name)
+                //     expect(response.body).has.property('job', 'QA tester')
+                //     expect(response.body.name).to.eq(data.name)
+                //     expect(response.body.job).to.eq('QA tester')
+                //     expect(response.body.id).to.not.be.null
+                // })
+            });
         })
-        .then((response) => {
-            cy.log(JSON.stringify(response))
-            expect(response.status).to.eq(201)
-            expect(response.body).has.property('name', randomName)
-            expect(response.body).has.property('job', 'Tecnica audiovisual')
-            expect(response.body.name).to.eq(randomName)
-            expect(response.body.job).to.eq('Tecnica audiovisual')
-            expect(response.body.id).to.not.be.null
-        });
     });
 });  
