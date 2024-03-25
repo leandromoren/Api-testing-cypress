@@ -2,6 +2,12 @@ const URL_BASE = "https://reqres.in";
 
 describe('Api testing on reqres', () => {
 
+    function generateRandomName() {
+        const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const name = Array.from({ length: 10 }, () => letters[Math.floor(Math.random() * letters.length)]).join('');
+        return name;
+    }
+
     beforeEach(() => {
         
     });
@@ -56,20 +62,24 @@ describe('Api testing on reqres', () => {
     // --- POST METHODS ---
 
     it('05 - Post Create user', () => {
+
+        const randomName = generateRandomName();
+        
+        cy.log('RANDOM NAME: ' + randomName);
         cy.request({
             method: 'POST',
             url: `${URL_BASE}/api/users`,
             body: {
-                name: 'nicole',
+                name: randomName,
                 job: 'Tecnica audiovisual'
             }
         })
         .then((response) => {
             cy.log(JSON.stringify(response))
             expect(response.status).to.eq(201)
-            expect(response.body).has.property('name', 'nicole')
+            expect(response.body).has.property('name', randomName)
             expect(response.body).has.property('job', 'Tecnica audiovisual')
-            expect(response.body.name).to.eq('nicole')
+            expect(response.body.name).to.eq(randomName)
             expect(response.body.job).to.eq('Tecnica audiovisual')
             expect(response.body.id).to.not.be.null
         });
