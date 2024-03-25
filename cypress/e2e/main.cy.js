@@ -52,4 +52,26 @@ describe('Api testing on reqres', () => {
             expect(response.status).to.eq(404);
         });
     });
+
+    // --- POST METHODS ---
+
+    it('05 - Post Create user', () => {
+        cy.request({
+            method: 'POST',
+            url: `${URL_BASE}/api/users`,
+            body: {
+                name: 'nicole',
+                job: 'Tecnica audiovisual'
+            }
+        })
+        .then((response) => {
+            cy.log(JSON.stringify(response))
+            expect(response.status).to.eq(201)
+            expect(response.body).has.property('name', 'nicole')
+            expect(response.body).has.property('job', 'Tecnica audiovisual')
+            expect(response.body.name).to.eq('nicole')
+            expect(response.body.job).to.eq('Tecnica audiovisual')
+            expect(response.body.id).to.not.be.null
+        });
+    });
 });  
